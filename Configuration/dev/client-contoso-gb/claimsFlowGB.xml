@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FLOW>	
+	<STAGES>
+        <STAGE name="BEGIN_CLAIM_GB">
+            <ON event="INIT_CLAIM">
+                <ACTIONS>
+                    <CALL endPoint="/initiate" saveOutputAs="initiate" service="claimsInitiation">{- BEGIN_CLAIM.input -}</CALL>
+                </ACTIONS>
+                <OTHERWISE>
+                    <GOTO stage="QUESTIONS">
+                        <RESPONSE>{- BEGIN_CLAIM.output.initiate -}</RESPONSE>
+                    </GOTO>
+                </OTHERWISE>
+            </ON>
+        </STAGE>		
+
+        <STAGE name="ZIPPITY_DOODAH_GB">
+			<ON event="NEXT">
+				<ACTIONS>
+				</ACTIONS>
+				<OTHERWISE>
+					<GOTO stage="OPTIONS">
+						<RESPONSE><![CDATA[{
+                            "response":{
+                                "fulfillmentType":"REPLACEMENT",
+                                "gsxEnabled":{- %clientConfig.services['howdy'].gsx-enabled -}
+                            }
+                }]]></RESPONSE>
+					</GOTO>
+				</OTHERWISE>
+			</ON>
+		</STAGE>
+	</STAGES>
+</FLOW>

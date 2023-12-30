@@ -1,0 +1,9 @@
+{
+	"variables": {
+		"__comment_common": "===========Common for process and system api===========",
+		"global.companyCode": ""
+	},
+	"jsonVariables": {
+		"global.coverageDatatTypes": []
+	}
+}

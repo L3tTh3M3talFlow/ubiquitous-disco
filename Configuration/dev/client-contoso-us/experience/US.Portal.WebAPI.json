@@ -1,0 +1,8 @@
+{
+	"services": {
+		"usersProcessDotNetAPI": {
+			"host": "${global.usersProcessDotNetAPI.host}",
+			"basePath": "${global.usersProcessDotNetAPI.basePath}"
+		}
+	}
+}

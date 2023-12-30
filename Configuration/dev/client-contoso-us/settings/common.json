@@ -1,0 +1,8 @@
+{
+	"variables": {
+		"__comment_google_recaptcha": "===========google-recaptcha.json - system===========",
+		"global.google-recaptcha.host": "https://google.com",
+		"global.google-recaptcha.path": "/recaptcha/api/siteverify",
+		"global.google-recaptcha.responseTimeOut": "5000"
+	}
+}

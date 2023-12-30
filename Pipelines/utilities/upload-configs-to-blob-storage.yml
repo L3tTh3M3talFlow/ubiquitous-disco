@@ -1,0 +1,62 @@
+trigger:
+  branches:
+    include:
+      - main
+      - release/*
+  paths:
+    include:
+      - /Configuration
+  batch: false
+
+pool:
+  vmimage: windows-latest
+
+resources:
+  repositories:
+    - repository: Contoso-Middleware
+      type: git
+      name: AzureADDemos/Contoso-Middleware
+      ref: refs/heads/main
+
+variables:
+  - name: targetType
+    value: "filePath"
+  - name: filePath
+    value: "$(System.DefaultWorkingDirectory)/Configuration/pwsh/pipeline/Upload-AllClientConfigs.ps1"
+  - name: arguments
+    value: "-StorageAccountName $(StorageAccountName) -SasToken $(SasToken) -Environment $(Environment)"
+  - name: branchCondition
+    value: |
+      or(
+        and(
+          succeeded(),
+          ne(variables['Build.Reason'], 'PullRequest'),
+          eq(variables['Build.SourceBranch'], 'refs/heads/main')
+        ),
+        and(
+          succeeded(),
+          ne(variables['Build.Reason'], 'PullRequest'),
+          startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')
+        )
+      )
+
+stages:
+  - stage: Upload_Configs_To_Blob_Storage_DEV
+    variables:
+      - group: VG-Configs-To-Blob-Storage-Dev
+    jobs:
+      - deployment:
+        displayName: DEV
+        environment: Development
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: PowerShell@2
+                  condition: ${{ variables.branchCondition }}
+                  displayName: "PowerShell - Upload Client Configs To Azure Storage"
+                  inputs:
+                    targetType: ${{ variables.targetType }}
+                    filePath: ${{ variables.filePath }}
+                    arguments: ${{ variables.arguments }}

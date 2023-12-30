@@ -1,0 +1,8 @@
+{
+	"services": {
+		"jwt": {
+			"ttl": "${global.Jwt.ttl}",
+			"secretKey": "${global.Jwt.secretKey}"
+		}
+	}
+}
