@@ -25,7 +25,7 @@
     None.
 
 .LINK
-    https://churchillsblog.com/post-tbd
+    https://churchillsblog.com/2023/12/31/uploading-repo-files-to-azure-storage/
 
 .NOTES
     NAME: Upload-AllClientConfigs.ps1
